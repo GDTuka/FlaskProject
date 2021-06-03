@@ -1,0 +1,74 @@
+body {
+    background: #A4D6F5;
+    /* display: flex; */
+    /* justify-content: center; */
+}
+h1 {
+    font-size: 45px;
+    color: #000;
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    justify-content: center;
+}
+a {
+    text-decoration: none;
+    color: #D92B2B;
+    font-size: 35px;    
+}
+p {
+    font-size: 25px;
+    color: black;
+}
+input[type="text"] {
+    width: 340px;
+    height: 30px;
+    border-radius: 10px;
+    outline: none;
+    margin-top: 20px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+main {
+    display: flex;
+    justify-content: center;
+}
+.loginMain {
+    display: flex;
+    justify-content: center;
+}
+.postMain {
+    display: flex;
+    justify-content: center;
+}
+.postMainn {
+    display: flex;
+    justify-content: center;
+}
+.adminTime {
+    margin-left: 20px;
+}
+.predlogMain {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.registrationMain {
+    display: flex;
+    justify-content: center;
+}
+.userMain {
+    display: flex;
+    justify-content: center;
+}
+.vipP {
+    display: flex;
+    justify-content: center;
+}
+.header {
+    display: flex;
+    justify-content: space-between;    
+}
+.post {
+    border: 1px solid black;
+}

@@ -2,7 +2,7 @@ from app import app
 from flask import render_template,url_for,request,redirect,flash
 from app.forms import LoginForm,RegistrationForm,predlogForm,EditProfileForm,PostForm,vipForm,deleteForm
 from flask_login import current_user,login_user,logout_user
-from app.models import User,Post,AboutMe,predlog,DeletedPost,DeleteUser
+from app.models import User,Post,predlog,DeletedPost,DeleteUser
 from flask_login import login_required
 from app import db
 @app.route('/')
@@ -50,7 +50,7 @@ def predlog():
 def edit_profile():
     form = EditProfileForm()
     if form.validate_on_submit():
-        AboutMeInfo = AboutMe(UserName = form.username.data,about_me = form.about_me.data , age=form.age.data,city=form.city.data,Music = form.Music.data,Work=form.work.data,FirstName=form.FirstName.data, SecondName=form.SecondName.data)
+        AboutMeInfo = AboutMe(UserName = current_user.username,about_me = form.about_me.data , age=form.age.data,city=form.city.data,Music = form.Music.data,Work=form.work.data,FirstName=form.FirstName.data, SecondName=form.SecondName.data,language=form.language.data)
         db.session.add(AboutMeInfo)
         db.session.commit()
         return redirect(url_for('edit_profile'))
@@ -63,7 +63,6 @@ def logout():
 @app.route('/user/<username>', methods=['GET','POST'])
 @login_required
 def user(username):
-    AboutUser =AboutMe.query.all()
     delete = deleteForm()
     form=PostForm()
     vip = '1'
@@ -131,7 +130,7 @@ def post():
 @app.route('/AdminPage')
 def AdminPage():
     return render_template('AdminPage.html')
-@app.route('/vip'  , methods=['GET','POST'])
+@app.route('/vip',methods=['GET','POST'])
 def vip():
     form = vipForm()
     if form.validate_on_submit():
@@ -145,3 +144,4 @@ def vip():
                 db.session.commit()
                 break
     return render_template('vip.html',form=form)
+#shit

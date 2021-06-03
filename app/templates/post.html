@@ -1,25 +1,35 @@
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
 {% block content %}
 
 <h1>POST PAGE</h1>
-
-<form action="" method="POST" novalidate>
-    {{ form.hidden_tag() }}
-    <p>
-        {{ form.post.lable }}
-        {{ form.post(size=32) }}
+<div class="postMain">
+    <form action="" method="POST" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.post.lable }}
+            {{ form.post(size=32) }}
+        </p>
+        <p>
+            {{ form.submit() }}
+     </p>
+    </form>
+</div>
+<div class="postMainn">
+    {% for post in posts %}
+    <p class="post">
+    {{ post.author }} says: <b>{{ post.body }}</b>
+    </p> 
+    <p class="adminTime">
+        {{ post.timestamp }}
     </p>
-    <p>
-        {{ form.submit() }}
-    </p>
-</form>
-
-{% for post in posts %}
-<p>
-{{ post.author }} says: <b>{{ post.body }}</b>
-</p>
-<p>
-    {{ post.timestamp }}
-</p>
+    {% if 'admin' == current_user.username %}
+    <form action="" method="POST" novalidate>
+        <p>
+        {{ delete.submit() }}
+        </p>
+    </form>
+</div>
+{% endif %}
 {% endfor %}
 
 {% endblock %}

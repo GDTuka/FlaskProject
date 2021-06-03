@@ -16,7 +16,6 @@ class User(UserMixin,db.Model):
     password_hash=db.Column(db.String(128))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     vip = db.Column(db.Integer)
-    aboutme = db.relationship('AboutMe',backref='User',uselist=False)
     
     followed = db.relationship(
         'User', secondary=followers,
@@ -78,22 +77,6 @@ class predlog(db.Model):
     Time = db.Column(db.DateTime, default=datetime.utcnow)
     def __repr__(self):
         return '<predlog {}>'.format(self.body)
-
-class AboutMe(db.Model):
-    id = db.Column(db.Integer,primary_key=True)
-    FirstName = db.Column(db.String(64))
-    SecondName = db.Column(db.String(64))
-    UserName = db.Column(db.String(64))
-    gender = db.Column(db.String(64))
-    age = db.Column(db.Integer)
-    city = db.Column(db.String(64))
-    language = db.Column(db.String(64))
-    Music = db.Column(db.String(64))
-    Work = db.Column(db.String(64))
-    about_me = db.Column(db.String(128))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    def __repr__(self):
-        return '< {}>'.format(self.body)
 class DeletedPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     delbody = db.Column(db.String(140))

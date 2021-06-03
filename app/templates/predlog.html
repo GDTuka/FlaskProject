@@ -1,23 +1,25 @@
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+
 {% block content %}
-
-<form action="" method="POST" novalidate>
-    {{ form.hidden_tag() }}
-    <p>
-        FirstName
-        {{ form.FirstName.lable }} <br>
-        {{ form.FirstName(size=32) }}
-    </p>
-    <p>
-        {{ form.LastName.label }} <br>
-        {{ form.LastName(size=32) }}
-    </p>
-    <p>
-        {{ form.Offer.label }} <br>
-        {{ form.Offer(size=32) }} <br>
-    </p>
-    <p>
-        {{ form.submit() }}
-    </p>
-</form>
-
+<div class="predlogMain">
+    <form action="" method="POST" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            FirstName
+            {{ form.FirstName.lable }} <br>
+            {{ form.FirstName(size=32) }}
+        </p>
+        <p>
+            {{ form.LastName.label }} <br>
+            {{ form.LastName(size=32) }}
+        </p>
+        <p>
+            {{ form.Offer.label }} <br>
+            {{ form.Offer(size=32) }} <br>
+        </p>
+        <p>
+            {{ form.submit() }}
+        </p>
+    </form>
+</div>
 {% endblock%}
