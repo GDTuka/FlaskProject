@@ -1,0 +1,27 @@
+
+{% block content %}
+<h1> hello there</h1>
+{% if 'admin' == current_user.username %}
+<form action="" method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.username.label }}
+        {{ form.username(size=32) }}
+    </p>
+    <p>
+        vip lvl
+        {{ form.viplvl.lable }} <br>
+        {{ form.viplvl(size=32) }}
+    </p>
+    <p>
+        {{ form.submit() }} 
+</form>
+{% endif %}
+{% if 'admin' != current_user.username %}
+<h1>Добро пожаловать на страницу покупки VIP статуса</h1>
+<p>
+    Чтобы получить вип статус переведите в приложении qiwi 100 рублей на номер +79852789242 а так же введите в комментарии свой никнейм
+
+</p>
+{% endif %}
+{% endblock %}

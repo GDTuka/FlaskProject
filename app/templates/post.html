@@ -1,0 +1,25 @@
+{% block content %}
+
+<h1>POST PAGE</h1>
+
+<form action="" method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.post.lable }}
+        {{ form.post(size=32) }}
+    </p>
+    <p>
+        {{ form.submit() }}
+    </p>
+</form>
+
+{% for post in posts %}
+<p>
+{{ post.author }} says: <b>{{ post.body }}</b>
+</p>
+<p>
+    {{ post.timestamp }}
+</p>
+{% endfor %}
+
+{% endblock %}

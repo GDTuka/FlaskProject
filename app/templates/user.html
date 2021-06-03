@@ -1,0 +1,66 @@
+
+
+{% block content %}
+{% if user.vip == 1 %}
+    <h1>VIP</h1>
+{% endif %}
+<h1> User: {{ user.username }}  </h1>
+{% if user.last_seen %}<p>Last seen on: {{ user.last_seen }}</p>{% endif %}
+<p>{{ user.followers.count() }} followers, {{ user.followed.count() }} following.</p>
+{% if user == current_user %}
+<p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
+{% elif not current_user.is_following(user) %}
+
+{% endif %}
+<p><a href="{{ url_for('follow', username=user.username) }}">Follow</a></p>
+
+<p><a href="{{ url_for('unfollow', username=user.username) }}">Unfollow</a></p>
+{% if 'admin' == current_user.username %}
+<form action="" method="POST" novalidate>
+    {{ delete.hidden_tag() }}
+    <p>
+        {{ delete.submit() }}
+    </p>
+</form>
+{% endif %}
+{% for u in AboutUser %}
+
+    {% if u.UserName == user.username %}
+    <p>
+        {{ u.FirstName }}
+    </p>
+    <p>
+        {{ u.SecondName }}
+    </p>
+    <p>
+
+    </p>
+    <p>
+
+    </p>
+    <p>
+
+    </p>
+    <p>
+
+    </p>
+    <p>
+
+    </p>
+    <p>
+
+    </p>
+    {% endif %}
+{% endfor %}
+{% for post in posts %}
+{% if post.author == user.username %}
+<p>
+{{ post.author }} says: <b>{{ post.body }}</b>
+</p>
+<p>
+    {{ post.timestamp }}
+</p>
+{% endif %}
+{% endfor %}
+
+{% endblock %}
