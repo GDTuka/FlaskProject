@@ -1,5 +1,6 @@
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
 
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
 <div class="header">
     <a href="{{ url_for('login') }}">Login</a>
 
@@ -17,3 +18,4 @@
 {% if 'admin' == current_user.username %}
 <a href="{{ url_for('AdminPage') }}">AdminPage</a>
 {% endif %}
+{% endblock %}

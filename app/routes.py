@@ -37,6 +37,7 @@ def registration():
     return render_template('registration.html', title='Register', form=form)
     return render_template('registration.html' ,form=form)
 @app.route('/predlog', methods=['GET','POST'])
+@login_required
 def predlog():
     form=predlogForm()
     if form.validate_on_submit():
@@ -77,7 +78,7 @@ def user(username):
                 db.session.add(delpost)
                 db.session.commit()
                 break
-        deluser=DeleteUser(delusername = user.username, delpassword= user.email, delemail = user.email,delabout_me = user.about_me, delvip=user.delvip)
+        deluser=DeleteUser(delusername = user.username, delpassword_hash= user.email, delemail = user.email, delvip=user.vip)
         db.session.add(deluser)
         db.session.delete(user)
         db.session.commit()
@@ -113,6 +114,7 @@ def unfollow(username):
     flash('You are not following {}.'.format(username))
     return redirect(url_for('user', username=username))
 @app.route('/post',methods=['GET','POST'])
+@login_required
 def post():
     form = PostForm()
     delete = deleteForm()
@@ -128,9 +130,11 @@ def post():
     posts = Post.query.order_by(Post.timestamp.desc()).all()
     return render_template("post.html", title='Home Page', form=form,posts=posts,delete=delete)
 @app.route('/AdminPage')
+@login_required
 def AdminPage():
     return render_template('AdminPage.html')
 @app.route('/vip',methods=['GET','POST'])
+@login_required
 def vip():
     form = vipForm()
     if form.validate_on_submit():

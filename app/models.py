@@ -88,9 +88,8 @@ class DeleteUser(db.Model):
     delusername = db.Column(db.String(64),index =True, unique=True)
     delemail = db.Column(db.String(64), index=True,unique=True)
     delpassword_hash=db.Column(db.String(128))
-    delabout_me = db.Column(db.String(140))
     dellast_seen = db.Column(db.DateTime, default=datetime.utcnow)
-    delvip = db.Column(db.Integer)
+    delvip = db.Column(db.String(128))
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
