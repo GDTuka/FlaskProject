@@ -29,7 +29,6 @@ class RegistrationForm(FlaskForm):
 class predlogForm(FlaskForm):
     FirstName = StringField('FirstName', validators=[DataRequired()])
     LastName = StringField('LastName',validators=[DataRequired()])
-    age = StringField('Age',validators=[DataRequired()])
     Offer = TextAreaField('Text', validators=[DataRequired()])
     submit = SubmitField('Registrate')
 class EditProfileForm(FlaskForm):
@@ -52,3 +51,7 @@ class vipForm(FlaskForm):
     submit = SubmitField('Submit')
 class deleteForm(FlaskForm):
     submit = SubmitField('delete')
+class commentsForm(FlaskForm):
+    username = StringField('username')
+    comments= TextAreaField('Comment')
+    addcomment = SubmitField('submit')

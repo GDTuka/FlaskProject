@@ -1,11 +1,13 @@
 {% block content %}
-
-    {% for u in info %}
-
-    {{ u.FirstName }} <br>
-    {{ u.LastName }} <br>
-    {{ u.offer }}
-    
-    {% endfor %}
-
+<form action="" method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.submit() }}
+    </p>
+</form>
+{% if 'admin' == current_user.username %}
+FisrtName{{ info.FirstName }}
+LastName{{ info.LastName }}
+Offer{{ info.offer }}
+{% endif%}
 {% endblock %}

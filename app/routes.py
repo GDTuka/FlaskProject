@@ -1,10 +1,31 @@
 from app import app
 from flask import render_template,url_for,request,redirect,flash
-from app.forms import LoginForm,RegistrationForm,predlogForm,EditProfileForm,PostForm,vipForm,deleteForm
+from app.forms import LoginForm,RegistrationForm,predlogForm,EditProfileForm,PostForm,vipForm,deleteForm,commentsForm
 from flask_login import current_user,login_user,logout_user
-from app.models import User,Post,predlog,DeletedPost,DeleteUser
+from app.models import User,Post,Offer,DeletedPost,DeleteUser,comm,deletedcomm
 from flask_login import login_required
 from app import db
+from app import mail
+from flask_mail import Message
+from threading import Thread
+
+def async_mail(f):
+    def wrapper(*args,**kwargs):
+        t = Thread(target=f,args=args,kwargs=kwargs)
+        t.start()
+    return wrapper 
+
+@async_mail
+def send_async_mail(msg):
+    with app.app_context():
+        mail.send(msg)
+
+def send_email(subject,sender,to_who,text_body='',html_body=''):
+    msg = Message(subject=subject,sender=sender,recipients=to_who)
+    msg.body = text_body
+    msg.html = html_body
+    send_async_mail(msg)
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -39,12 +60,13 @@ def registration():
 @app.route('/predlog', methods=['GET','POST'])
 @login_required
 def predlog():
-    form=predlogForm()
+    info = Offer.query.order_by(Offer.timestamp.desc()).first()
+    form = predlogForm()
     if form.validate_on_submit():
-        user = predlog(FirstName = form.FisrtName.data, LastName=form.LastName.data,offer=form.Offer.data)
+        user = Offer(FirstName = form.FirstName.data, LastName=form.LastName.data,offer=form.Offer.data)
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for('index'))
+        return redirect(url_for('AdminPage'))
     return render_template('predlog.html', form=form)
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
@@ -69,6 +91,7 @@ def user(username):
     vip = '1'
     user=User.query.filter_by(username=username).first_or_404()
     posts = Post.query.order_by(Post.timestamp.desc()).all()
+    comments = comm.query.all()
     current_user.body = form.post.data
     if delete.validate_on_submit():
         for u in posts:
@@ -78,7 +101,13 @@ def user(username):
                 db.session.add(delpost)
                 db.session.commit()
                 break
-        deluser=DeleteUser(delusername = user.username, delpassword_hash= user.email, delemail = user.email, delvip=user.vip)
+        for u in comments:
+            if u.commentauthor == user.username:
+                delcom = deletedcomm(delcombody = u.commentbody, delcomauthor = u.commentauthor,delcommentid=u.commentid)
+                db.session.delete(u) 
+                db.session.add(delcom) 
+                db.session.commit()
+        deluser=DeleteUser(delusername = user.username, delpassword_hash= user.email, delemail = user.email, delvip=user.vip, dellast_seen = user.last_seen,)
         db.session.add(deluser)
         db.session.delete(user)
         db.session.commit()
@@ -117,22 +146,23 @@ def unfollow(username):
 @login_required
 def post():
     form = PostForm()
-    delete = deleteForm()
+    comment = commentsForm()
     if form.validate_on_submit():
         post = Post(body=form.post.data, author=current_user.username)
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('post'))
-    if delete.validate_on_submit():
-        db.sesson.delete(post)
-        db.session.commit()
-        return redirect(url_for('post'))
     posts = Post.query.order_by(Post.timestamp.desc()).all()
-    return render_template("post.html", title='Home Page', form=form,posts=posts,delete=delete)
-@app.route('/AdminPage')
+    return render_template("post.html", title='Home Page', form=form,posts=posts,comment=comment,)
+@app.route('/AdminPage' ,methods=['GET','POST'])
 @login_required
 def AdminPage():
-    return render_template('AdminPage.html')
+    info = Offer.query.order_by(Offer.timestamp.desc()).first()
+    form = predlogForm()
+    if form.validate_on_submit():
+        send_email('New order',app.config['ADMINS'][0],['artem.soglaev@mail.ru'],'SHITTTTTT',render_template('AdminPage.html',info=info))
+        return redirect(url_for('index'))
+    return render_template('AdminPage.html',info=info,form=form)
 @app.route('/vip',methods=['GET','POST'])
 @login_required
 def vip():
@@ -148,4 +178,14 @@ def vip():
                 db.session.commit()
                 break
     return render_template('vip.html',form=form)
-#shit
+@app.route('/comments/<id>' ,methods=['GET','POST'])
+def comments(id):
+    comment=Post.query.filter_by(id=id).first_or_404()
+    commentari = comm.query.all()
+    form = commentsForm()
+    if form.validate_on_submit():
+        com = comm(commentbody = form.comments.data, commentauthor=current_user.username, commentid=comment.id)
+        db.session.add(com)
+        db.session.commit()
+        return redirect(url_for('post'))
+    return render_template('comments.html',comment=comment,form=form,commentari=commentari)

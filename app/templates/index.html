@@ -13,9 +13,7 @@
     <a href="{{ url_for('user', username=current_user.username)}}">User</a>
 
     <a href="{{ url_for('post') }}">post</a>
+    <a href="{{ url_for('vip') }}">vip</a>
 </div>
 <h1>Приветствуем вас на нашей соц. сети Old fashion social network! Для нас самое главное - сохранение культуры двухтысячных, именно поэтому тут так мало возможностей и вы можете себя почувствовать в прошлом.</h1>
-{% if 'admin' == current_user.username %}
-<a href="{{ url_for('AdminPage') }}">AdminPage</a>
-{% endif %}
 {% endblock %}

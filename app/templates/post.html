@@ -13,6 +13,7 @@
     <a href="{{ url_for('user', username=current_user.username)}}">User</a>
 
     <a href="{{ url_for('post') }}">post</a>
+    <a href="{{ url_for('vip') }}">vip</a>
 </div>
 <h1>Post page</h1>
 <div class="postMain">
@@ -32,9 +33,7 @@
     <p class="post">
     {{ post.author }} says: <b>{{ post.body }}</b>
     </p> 
-    <p class="adminTime">
-        {{ post.timestamp }}
-    </p>
+    <a href="{{ url_for('comments', id= post.id  ) }}">comment</a>
 </div>
 {% endfor %}
 

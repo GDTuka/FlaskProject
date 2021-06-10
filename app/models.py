@@ -63,20 +63,17 @@ class Post(db.Model):
     author = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
     def __repr__(self):
         return '<Post {}>'.format(self.body)
 
-class predlog(db.Model):
-    id = db.Column(db.Integer,primary_key=True)
+class Offer(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     FirstName = db.Column(db.String(64))
     LastName = db.Column(db.String(64))
-    Age = db.Column(db.Integer())
     offer = db.Column(db.String(1024))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    Time = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     def __repr__(self):
-        return '<predlog {}>'.format(self.body)
+        return '<Offer{}>'.format(self.FirstName)
 class DeletedPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     delbody = db.Column(db.String(140))
@@ -90,6 +87,25 @@ class DeleteUser(db.Model):
     delpassword_hash=db.Column(db.String(128))
     dellast_seen = db.Column(db.DateTime, default=datetime.utcnow)
     delvip = db.Column(db.String(128))
+class comm(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    commentbody = db.Column(db.String(140))
+    commentauthor = db.Column(db.String(140))
+    commenttimestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    commentid = db.Column(db.Integer)
+    def __repr__(self):
+        return '<comm {}>'.format(self.commentauthor)
+class deletedcomm(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    delcombody = db.Column(db.String(140))
+    delcomauthor = db.Column(db.String(140))
+    delcommentid = db.Column(db.Integer)
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
+
+#вытащить ddl из базы, проверить целостность данных
+#sqlmaestro посмотреть что это
+#проверить синхронизацию концептуальной, логической и ddl (модальность множественность связей  и что прописываются ограниченая целостности)
+#добавить в отчёт примеры срабатывания ограничений целостности
+#добавить ответы на посты 

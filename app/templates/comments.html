@@ -1,0 +1,21 @@
+{% block content %}
+<p class="post">
+    {{ comment.author }} says: <b>{{ comment.body }}</b>
+</p> 
+<h1> U can comment this post </h1>
+    <form action="" method="POST">
+        {{form.hidden_tag()}}
+        <p>
+            {{ form.comments.body }}
+            {{ form.comments(size=32) }}
+        </p>
+        <p>
+            {{ form.addcomment() }}
+        </p>
+    </form>
+    {% for u in commentari %}
+        {% if  comment.id  ==  u.id %}
+            {{ u.commentauthor }} reaction <b> {{ u.commentbody }} </b> <br>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

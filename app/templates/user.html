@@ -13,6 +13,7 @@
     <a href="{{ url_for('user', username=current_user.username)}}">User</a>
 
     <a href="{{ url_for('post') }}">post</a>
+    <a href="{{ url_for('vip') }}">vip</a>
 </div>
 {% if user.vip == 1 %}
     <h1>VIP</h1>

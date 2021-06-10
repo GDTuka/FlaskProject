@@ -13,6 +13,7 @@
     <a href="{{ url_for('user', username=current_user.username)}}">User</a>
 
     <a href="{{ url_for('post') }}">post</a>
+    <a href="{{ url_for('vip') }}">vip</a>
 </div>
 <div class="predlogMain">
     <form action="" method="POST" novalidate>
@@ -34,5 +35,6 @@
             {{ form.submit() }}
         </p>
     </form>
+  
 </div>
 {% endblock%}
