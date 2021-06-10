@@ -46,6 +46,7 @@
 <p>
     {{ post.timestamp }}
 </p>
+<a href="{{ url_for('comments', id= post.id  ) }}">comment</a>
 {% endif %}
 {% endfor %}
 

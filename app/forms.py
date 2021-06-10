@@ -55,3 +55,5 @@ class commentsForm(FlaskForm):
     username = StringField('username')
     comments= TextAreaField('Comment')
     addcomment = SubmitField('submit')
+class send_mailForm():
+    submit = SubmitField('send Email')

@@ -88,7 +88,6 @@ def logout():
 def user(username):
     delete = deleteForm()
     form=PostForm()
-    vip = '1'
     user=User.query.filter_by(username=username).first_or_404()
     posts = Post.query.order_by(Post.timestamp.desc()).all()
     comments = comm.query.all()
@@ -146,21 +145,20 @@ def unfollow(username):
 @login_required
 def post():
     form = PostForm()
-    comment = commentsForm()
     if form.validate_on_submit():
         post = Post(body=form.post.data, author=current_user.username)
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('post'))
     posts = Post.query.order_by(Post.timestamp.desc()).all()
-    return render_template("post.html", title='Home Page', form=form,posts=posts,comment=comment,)
+    return render_template("post.html", title='Home Page', form=form,posts=posts)
 @app.route('/AdminPage' ,methods=['GET','POST'])
 @login_required
 def AdminPage():
     info = Offer.query.order_by(Offer.timestamp.desc()).first()
-    form = predlogForm()
+    form = deleteForm()
     if form.validate_on_submit():
-        send_email('New order',app.config['ADMINS'][0],['artem.soglaev@mail.ru'],'SHITTTTTT',render_template('AdminPage.html',info=info))
+        send_email('New order',app.config['ADMINS'][0],['artem.soglaev@mail.ru'],'SHITTTTTT',render_template('AdminPage.html',info=info,form=form))
         return redirect(url_for('index'))
     return render_template('AdminPage.html',info=info,form=form)
 @app.route('/vip',methods=['GET','POST'])
@@ -187,5 +185,7 @@ def comments(id):
         com = comm(commentbody = form.comments.data, commentauthor=current_user.username, commentid=comment.id)
         db.session.add(com)
         db.session.commit()
-        return redirect(url_for('post'))
+        return redirect(url_for('comments' ,id=comment.id))
     return render_template('comments.html',comment=comment,form=form,commentari=commentari)
+# сделать выборку из таблицы Post отсартированную по времени
+# переменной мы присваеваем значения из таблицы (название таблицы) отсортированные по времени 

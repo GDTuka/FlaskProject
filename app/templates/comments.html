@@ -14,8 +14,9 @@
         </p>
     </form>
     {% for u in commentari %}
-        {% if  comment.id  ==  u.id %}
-            {{ u.commentauthor }} reaction <b> {{ u.commentbody }} </b> <br>
+        {% if u.commentid == comment.id %}   
+            {{ u.commentauthor }} says {{ u.commentbody }}  <br>
+            {{ u.commentid }}
         {% endif %}
     {% endfor %}
 {% endblock %}
