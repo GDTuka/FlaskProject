@@ -93,13 +93,12 @@ def user(username):
     comments = comm.query.all()
     current_user.body = form.post.data
     if delete.validate_on_submit():
-        for u in posts:
+        for u in posts: 
             if u.author == user.username:
                 delpost = DeletedPost(delbody = u.body, delauthor=u.author,deltimestamp=u.timestamp)
                 db.session.delete(u)
                 db.session.add(delpost)
                 db.session.commit()
-                break
         for u in comments:
             if u.commentauthor == user.username:
                 delcom = deletedcomm(delcombody = u.commentbody, delcomauthor = u.commentauthor,delcommentid=u.commentid)

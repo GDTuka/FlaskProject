@@ -82,8 +82,8 @@ class DeletedPost(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 class DeleteUser(db.Model):
     id = db.Column(db.Integer,primary_key=True)
-    delusername = db.Column(db.String(64),index =True, unique=True)
-    delemail = db.Column(db.String(64), index=True,unique=True)
+    delusername = db.Column(db.String(64),index =True)
+    delemail = db.Column(db.String(64), index=True)
     delpassword_hash=db.Column(db.String(128))
     dellast_seen = db.Column(db.DateTime, default=datetime.utcnow)
     delvip = db.Column(db.String(128))
